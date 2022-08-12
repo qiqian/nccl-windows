@@ -17,6 +17,7 @@
   if( e != cudaSuccess ) {                          \
     printf("Cuda failure %s:%d '%s'\n",             \
         __FILE__,__LINE__,cudaGetErrorString(e));   \
+    __debugbreak();                                 \
     exit(EXIT_FAILURE);                             \
   }                                                 \
 } while(0)
@@ -26,6 +27,7 @@
   if (r!= ncclSuccess) {                            \
     printf("NCCL failure %s:%d '%s'\n",             \
         __FILE__,__LINE__,ncclGetErrorString(r));   \
+    __debugbreak();                                 \
     exit(EXIT_FAILURE);                             \
   }                                                 \
 } while(0)
@@ -44,6 +46,7 @@ double CheckDelta(const T* results, const T* expected, int N);
       curandStatus_t error = (cmd);                                             \
       if (error != CURAND_STATUS_SUCCESS) {                                     \
         printf("CuRAND error %i at %s:%i\n", error, __FILE__ , __LINE__);       \
+        __debugbreak();                                 \
         exit(EXIT_FAILURE);                                                     \
       }                                                                         \
     } while (false)
@@ -310,7 +313,7 @@ double CheckDelta(const T* results, const T* expected, int N) {
   CUDACHECK(cudaHostGetDevicePointer(&devmax, &maxerr, 0));
   deltaKern<T, 512><<<1, 512>>>(results, devexp, N, devmax);
   CUDACHECK(cudaHostUnregister(&maxerr));
-  CUDACHECK(cudaHostUnregister((void*)devexp));
+  CUDACHECK(cudaHostUnregister((void*)expected));
   return maxerr;
 }
 
