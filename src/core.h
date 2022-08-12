@@ -163,7 +163,6 @@ extern DebugLevel ncclDebugLevel;
 #else
 #define NCCL_API(ret, func, ...)            \
     extern "C"                              \
-    _declspec(dllexport)                    \
     ret func(__VA_ARGS__)
 #endif // end PROFAPI
 

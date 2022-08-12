@@ -18,9 +18,9 @@
 
 #ifdef _WIN32
     #ifdef COMPILING_NCCL
-        #define NCCL_EXPORTED _declspec(dllexport)
+        #define NCCL_EXPORTED
     #else
-        #define NCCL_EXPORTED _declspec(dllimport)
+        #define NCCL_EXPORTED
     #endif
 #else
     #define NCCL_EXPORTED
